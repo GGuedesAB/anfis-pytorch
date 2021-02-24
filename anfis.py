@@ -224,6 +224,8 @@ class ConsequentLayer(torch.nn.Module):
         # Use gels to do LSE, then pick out the solution rows:
         try:
             coeff_2d, _ = torch.gels(y_actual_2d, weighted_x_2d)
+        except AttributeError:
+            coeff_2d, _ = torch.lstsq(y_actual_2d, weighted_x_2d)
         except RuntimeError as e:
             print('Internal error in gels', e)
             print('Weights are:', weighted_x)
